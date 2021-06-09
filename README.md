@@ -2,7 +2,7 @@
 
 ## A template for user authentication and authorization
 
-This is a template for handling user authentication using Express, MongoDB and JWT.
+This is a template for handling user authentication and authorization using Express, MongoDB and JWT.
 
 ## Features
 
