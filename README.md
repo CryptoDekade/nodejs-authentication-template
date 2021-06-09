@@ -1,6 +1,6 @@
 # NodeJS Authentication Template
 
-## Express Express-Session MongoDB JWT
+## A template for user authentication and authorization
 
 This is a template for handling user authentication using Express, MongoDB and JWT.
 
