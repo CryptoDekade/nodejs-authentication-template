@@ -19,17 +19,17 @@ This template relies on a number of dependencies to work properly:
 
 -   [ejs](https://www.npmjs.com/package/ejs) is a templating language that lets you generate HTML markup with JavaScript.
 
--   [express-session](https://github.com/expressjs/session) as a library for handling sessions
+-   [express-session](https://github.com/expressjs/session) is a library for handling sessions
 
--   [mongoose](https://mongoosejs.com/) as an interface to MongoDB
+-   [mongoose](https://mongoosejs.com/) is a library for MongoDB
 
--   [connect-mongo](https://www.npmjs.com/package/connect-mongo/v/2.0.3) as a library for session stores
+-   [connect-mongo](https://www.npmjs.com/package/connect-mongo/v/2.0.3) is a library for session stores
 
--   [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) as a library to help you generate JWT
+-   [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) is a library to help you generate JWT
 
--   [bcrypt](https://www.npmjs.com/package/bcrypt) as a library to help you hash passwords
+-   [bcrypt](https://www.npmjs.com/package/bcrypt) is a library to help you hash passwords
 
--   [dotenv](https://www.npmjs.com/package/dotenv) for loading environment variables
+-   [dotenv](https://www.npmjs.com/package/dotenv) is a library for loading environment variables
 
 # Installation
 
