@@ -1,6 +1,15 @@
+| ![GitHub repo size](https://img.shields.io/github/repo-size/CryptoDekade/nodejs-authentication-template?style=for-the-badge) | ![GitHub](https://img.shields.io/github/license/CryptoDekade/nodejs-authentication-template?style=for-the-badge) |
+| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+
 # NodeJS Authentication Template
 
-This is a template for handling user authentication and authorization using Express, MongoDB and JWT.
+This is a template for handling user authentication and authorization using **NodeJS**, **Express**, **MongoDB** and **JWT**.
+
+## Tech Stack
+
+**Client:** [Boostrap](https://getbootstrap.com/)
+
+**Server:** [Node](https://nodejs.org/), [Express](https://expressjs.com/), [MongoDB](https://www.mongodb.com/), [JWT](https://www.npmjs.com/package/jsonwebtoken)
 
 ## Features
 
@@ -9,33 +18,52 @@ The template has a number of features:
 -   Login Authentication
 -   Session Authorization
 
-## Dependencies
+## Run Locally
 
-This template relies on a number of dependencies to work properly:
+This template uses a custom [Bootstrap](https://getbootstrap.com/) theme included in the repository.
 
--   [node.js](https://nodejs.org/) is designed to build scalable network applications
+If you want to use a different instance simply replace `bootstrap.min.css` in the `/public/css/` folder with your own.
 
--   [express](https://expressjs.com/) is a fast, unopinionated, minimalist web framework for Node.js
+Alternatively, you can delete `bootstrap.min.css` and link to the [Bootstrap](https://getbootstrap.com/) CDN inside `/views/partials/head.ejs`
 
--   [ejs](https://www.npmjs.com/package/ejs) is a templating language that lets you generate HTML markup with JavaScript.
+#### Clone the project
 
--   [express-session](https://github.com/expressjs/session) is a library for handling sessions
-
--   [mongoose](https://mongoosejs.com/) is a library for MongoDB
-
--   [connect-mongo](https://www.npmjs.com/package/connect-mongo/v/2.0.3) is a library for session stores
-
--   [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) is a library to help you generate JWT
-
--   [bcrypt](https://www.npmjs.com/package/bcrypt) is a library to help you hash passwords
-
--   [dotenv](https://www.npmjs.com/package/dotenv) is a library for loading environment variables
-
-# Installation
-
-Requires [node.js](https://nodejs.org/) to run.
-
-```sh
-npm install
-node auth-server.js
+```bash
+  git clone https://github.com/CryptoDekade/nodejs-authentication-template.git
 ```
+
+#### Go to the project directory
+
+```bash
+  cd my-project
+```
+
+#### Install dependencies
+
+```bash
+  npm install
+```
+
+#### Start the server
+
+```bash
+  npm run start
+```
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`MONGO_DB`
+
+`ACCESS_TOKEN_SECRET`
+
+`REFRESH_TOKEN_SECRET`
+
+## Authors
+
+-   [@CryptoDekade](https://www.github.com/CryptoDekade)
+
+## License
+
+[GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/)
