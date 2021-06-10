@@ -14,7 +14,7 @@ const verify = require('./verifyToken')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const { registerValidation } = require('./validation')
+const { registerValidation, loginValidation } = require('./validation')
 
 const SERVER_PORT = process.env.SERVER_PORT || 3000
 const MONGO_DB = process.env.MONGO_DB
@@ -109,21 +109,37 @@ app.post('/register', async (req, res, next) => {
     }
 })
 
-app.post('/login', async (req, res) => {
-    const user = await User.findOne({ username: req.body.username })
-    if (!user) return res.status(400).send('Wrong username/password')
-    const validPass = await bcrypt.compare(req.body.password, user.password)
-    if (!validPass) return res.status(400).send('Wrong username/password')
+app.post('/login', async (req, res, next) => {
+    try {
+        const validationResult = await loginValidation.validateAsync(req.body)
 
-    const accessToken = generateAccessToken(user)
-    const refreshToken = jwt.sign({ _id: user._id }, REFRESH_TOKEN_SECRET)
-    req.session.accessToken = accessToken
-    req.session.userId = user._id
-    req.session.save()
-    user.refreshToken = refreshToken
-    await user.save()
+        const validUser = await User.findOne({
+            username: validationResult.username,
+        })
+        if (!validUser) return res.status(400).send('Wrong username/password')
+        const validPass = await bcrypt.compare(
+            validationResult.password,
+            validUser.password
+        )
+        if (!validPass) return res.status(400).send('Wrong username/password')
 
-    res.redirect('/private')
+        const accessToken = generateAccessToken(validUser)
+        const refreshToken = jwt.sign(
+            { _id: validUser._id },
+            REFRESH_TOKEN_SECRET
+        )
+        req.session.accessToken = accessToken
+        req.session.userId = validUser._id
+        req.session.save()
+        validUser.refreshToken = refreshToken
+        await validUser.save()
+
+        res.redirect('/private')
+    } catch (err) {
+        if (err.isJoi) return res.status(422).send(err)
+        next(err)
+        if (err) res.send(err)
+    }
 })
 
 app.delete('/logout', async (req, res) => {
@@ -160,6 +176,6 @@ app.listen(SERVER_PORT, () => {
 
 const generateAccessToken = (user) => {
     return jwt.sign({ _id: user._id }, ACCESS_TOKEN_SECRET, {
-        expiresIn: '15m',
+        expiresIn: '15s',
     })
 }
