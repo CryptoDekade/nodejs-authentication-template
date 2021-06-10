@@ -14,6 +14,8 @@ const verify = require('./verifyToken')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+const { registerValidation } = require('./validation')
+
 const SERVER_PORT = process.env.SERVER_PORT || 3000
 const MONGO_DB = process.env.MONGO_DB
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET
@@ -73,20 +75,37 @@ app.get('/login', (req, res) => {
     res.render('login')
 })
 
-app.post('/register', async (req, res) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const user = new User({
-        username: req.body.username,
-        password: hashedPassword,
-        email: req.body.email,
-    })
+app.post('/register', async (req, res, next) => {
     try {
+        const validationResult = await registerValidation.validateAsync(
+            req.body
+        )
+
+        const usernameExists = await User.findOne({
+            username: validationResult.username,
+        })
+        if (usernameExists)
+            return res.status(400).send('Username already exists')
+
+        const emailExists = await User.findOne({
+            email: validationResult.email,
+        })
+        if (emailExists) return res.status(400).send('Email already exists')
+
+        const hashedPassword = await bcrypt.hash(validationResult.password, 10)
+        const user = new User({
+            username: validationResult.username,
+            password: hashedPassword,
+            email: validationResult.email,
+        })
+
         await user.save()
         console.log(`MongoDB: User: '${user._id}' added to 'Users' database`)
         res.redirect('/login')
     } catch (err) {
-        console.error(err)
-        res.status(400).send(err)
+        if (err.isJoi) return res.status(422).send(err)
+        next(err)
+        if (err) return res.send(err)
     }
 })
 
