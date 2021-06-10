@@ -21,6 +21,7 @@ const MONGO_DB = process.env.MONGO_DB
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET
 
+// Setup a connection to the MongoDB database
 mongoose
     .connect(MONGO_DB, {
         useNewUrlParser: true,
@@ -40,8 +41,10 @@ mongoose.connection.on('err', (err) => {
     console.error(err)
 })
 
+// Setup the view engine
 app.set('view engine', 'ejs')
 
+// Middleware
 app.use('/static', express.static('./public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -59,6 +62,7 @@ app.use(
     })
 )
 
+// Routes
 app.get('/', (req, res) => {
     res.render('index')
 })
@@ -75,6 +79,9 @@ app.get('/login', (req, res) => {
     res.render('login')
 })
 
+// First try to validate the input from the register form.
+// If that passes, check to see if the given username/password is already in the database.
+// If there is no record in the database, hash the password, create a new user and push it to the database.
 app.post('/register', async (req, res, next) => {
     try {
         const validationResult = await registerValidation.validateAsync(
@@ -109,6 +116,10 @@ app.post('/register', async (req, res, next) => {
     }
 })
 
+// First try to validate the input from the login form.
+// If that passes, check to see if the username/password combination is correct.
+// If correct, generate access and refresh token.
+// Store the access token in the session cookie and push the refresh token to the database.
 app.post('/login', async (req, res, next) => {
     try {
         const validationResult = await loginValidation.validateAsync(req.body)
@@ -142,6 +153,7 @@ app.post('/login', async (req, res, next) => {
     }
 })
 
+// Logout a user from his account
 app.delete('/logout', async (req, res) => {
     const user = await User.findOne({ _id: req.session.userId })
     if (!user) return res.status(400).send('User not found')
@@ -152,6 +164,7 @@ app.delete('/logout', async (req, res) => {
     res.status(204).send('Logged out!')
 })
 
+// Generate a new access token from a refresh token stored in the user database
 app.post('/token', async (req, res) => {
     const user = await User.findOne({ _id: req.session.userId })
     if (!user) return res.status(400).send('User not found')
@@ -174,6 +187,7 @@ app.listen(SERVER_PORT, () => {
     console.log(`Server listening on port ${SERVER_PORT}`)
 })
 
+// Generate a JWT access token
 const generateAccessToken = (user) => {
     return jwt.sign({ _id: user._id }, ACCESS_TOKEN_SECRET, {
         expiresIn: '15s',
