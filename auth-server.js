@@ -9,12 +9,12 @@ const Session = require('./models/session')
 
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
-const verify = require('./verifyToken')
+const verifyToken = require('./middleware/verifyToken')
 
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const { registerValidation, loginValidation } = require('./validation')
+const { registerValidation, loginValidation } = require('./helpers/validation')
 
 const SERVER_PORT = process.env.SERVER_PORT || 3000
 const MONGO_DB = process.env.MONGO_DB
@@ -67,7 +67,7 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
-app.get('/private', verify, (req, res) => {
+app.get('/private', verifyToken, (req, res) => {
     res.send('This route is private!')
 })
 
