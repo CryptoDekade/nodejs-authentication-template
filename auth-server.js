@@ -5,7 +5,6 @@ const app = express()
 
 const mongoose = require('mongoose')
 const User = require('./models/user')
-const Session = require('./models/session')
 
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
