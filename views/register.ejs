@@ -1,92 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <%- include('./partials/head') %>
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col"><%- include('./partials/navbar') %></div>
-            </div>
-            <div class="row">
-                <div class="col"></div>
-                <div class="col">
-                    <div class="container m-4">
-                        <div
-                            class="
-                                alert alert-warning alert-dismissible
-                                fade
-                                show
-                            "
-                            role="alert"
-                            id="error-group"
-                        >
-                            This is a warning!
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="alert"
-                                aria-label="Close"
-                            >
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="/register" method="POST">
-                            <div class="mb-3"><h1>Register</h1></div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label"
-                                    >Username</label
-                                >
-                                <input
-                                    type="text"
-                                    name="username"
-                                    id="username"
-                                    class="form-control"
-                                />
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label"
-                                    >Password</label
-                                >
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    class="form-control"
-                                />
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label"
-                                    >Email address</label
-                                >
-                                <input
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    class="form-control"
-                                    aria-describedby="emailHelp"
-                                />
-                                <div id="emailHelp" class="form-text">
-                                    We'll never share your email with any 3rd
-                                    parties
-                                </div>
-                            </div>
-                            <div>
-                                <button
-                                    type="submit"
-                                    class="btn btn-primary me-4"
-                                >
-                                    Register
-                                </button>
-                                <button class="btn btn-warning">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
+  <head>
+    <%- include('./partials/head') %>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col"><%- include('./partials/navbar') %></div>
+      </div>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+          <div class="container m-4">
+            <form action="/register" method="POST" id="register">
+              <div class="mb-3"><h1>Register</h1></div>
+              <div class="mb-3">
+                <small></small>
+                <label for="username" class="form-label">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  class="form-control"
+                  required
+                  minlength="6"
+                  maxlength="30"
+                />
+              </div>
+              <div class="mb-3">
+                <small></small>
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  class="form-control"
+                  required
+                  minlength="6"
+                  maxlength="1024"
+                />
+              </div>
+              <div class="mb-3">
+                <small></small>
+                <label for="email" class="form-label">Email address</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  class="form-control"
+                  required
+                  aria-describedby="emailHelp"
+                />
+                <div id="emailHelp" class="form-text">
+                  We'll never share your email with any 3rd parties
                 </div>
-                <div class="col"></div>
-            </div>
-
-            <%- include('./partials/scripts') %>
+              </div>
+              <div>
+                <input
+                  type="submit"
+                  value="Register"
+                  class="btn btn-primary"
+                  onclick="validate"
+                />
+              </div>
+            </form>
+          </div>
         </div>
-    </body>
+        <div class="col"></div>
+      </div>
+
+      <%- include('./partials/scripts') %>
+    </div>
+  </body>
 </html>
